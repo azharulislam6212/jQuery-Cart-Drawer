@@ -1,0 +1,71 @@
+<div class="cart-wrap">
+    <div class="main-cart-wrap">
+        <div class="cart-body">
+            <div class="cart-top">
+                <h4>CART</h4>
+                <div class="cart-close" onclick="closeCart(event, this)"></div>
+            </div>
+            <div class="cart-item-wrap flex">
+                {% if cart.item_count == 0 %}
+                    <div class="epmty-cart">
+                        <p>Your Cart is Empty</p>
+                    </div>
+                 {% endif %}
+              {% assign cartIDs = '' %}
+
+              {% for item in cart.items %}
+              {% if forloop.first %}
+                {% assign cartIDs = cartIDs | append: item.product_id %}
+              {% else %}
+                {% assign cartIDs = cartIDs | append: ',' | append: item.product_id %}
+              {% endif %}
+
+                <div class="cart-item">
+                    <div class="cart-item-thumb">
+                        <figure>
+                          {% render 'responsive-image', image: item.product.featured_image %}
+                        </figure>
+                    </div>
+                    <div class="cart-item-content flex">
+                        <div class="cart-item-title">
+                            <h6><a href="{{ item.product.url }}">{{ item.product.title }}</a></h6>
+                            <span>{{ item.line_price | money }}</span>
+                        </div>
+                        <div class="cart-quantity flex">
+                            <div class="cart-counter flex">
+                                <span class="button" onclick="decreaseItem(event, this)"><img src="{{'collapse.png' | asset_url }}" alt="collapse"></span>
+                            
+                                <input
+                                  type="text"
+                                  class="input-num"
+                                  name="{{ item.variant.id }}"
+                                  data-id="{{ item.variant.id }}"
+                                  value="{% if item.quantity <=9 %}0{% endif %}{{ item.quantity }}"
+                                  min="0">
+
+                                <span class="button up-btn" onclick="increaseItem(event, this)"><img src="{{'expand.png' | asset_url}}" alt="expand"></span>
+                            </div>
+                            <a  href="javascript:void(0)" class="remove-cart-item" onclick="itemRemove(event, this)"
+                              data-id="{{item.key}}">Remove</a>
+                        </div>
+                    </div>
+                </div>
+
+              {% endfor %}
+
+            </div>
+        </div>
+
+        {% if cart.item_count != 0 %}
+        <div class="cart-bottom">
+            <div class="cart-subtotal flex">
+                <h6>SUBTOTAL</h6>
+                <span>{{ cart.total_price | money }}</span>
+            </div>
+            <div class="cart-checkout-btn">
+                <a href="/checkout" class="btn black">CHECKOUT</a>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+  </div> 
