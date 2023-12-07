@@ -1,0 +1,41 @@
+      {%- form 'product', product, class: 'single-product-form', id: product_form_id, novalidate: 'novalidate' -%}
+                    <input type="hidden"  name="id"  value="{{ product.selected_or_first_available_variant.id }}">
+                    {% assign current_variant = product.selected_or_first_available_variant %}
+                   
+                <div class="gilley-product-varient">
+                    {% unless product.has_only_default_variant %}
+                        {%- for option in product.options_with_values -%}
+                            <div class="dropdown option-{{ option.name }}">
+                                <span class="sub-title">{{ option.name }}</span>
+                                <select class="select-btn">
+                                    {% assign values = '' %}
+                                    {% assign option_index = 0 %}
+                                    {% for variant in product.variants %}
+                                      {% assign value = variant.options[option_index] %}
+                                      {% assign values = values | join: ',' %}
+                                      {% assign values = values | append: ',' | append: value %}
+                                      {% assign values = values | split: ',' %}
+                                    <option value="{{ value | escape }}">{{ value | escape }}</option>
+                                {% endfor %}
+                                 
+                                </select>
+                            </div>
+                        {% endfor %}
+                       {% endunless %}
+                        <div class="quantity-count-wrap">
+                            <span class="sub-title">Quantity</span>
+                                <div>
+                                    <button type="button" class="minus" onclick="decreaseCount(event, this)">-</button>
+                                    <input name="quantity" class="quantity input-num"  min="0"  type="number" value="1">
+                                    <button type="button" class="plus" onclick="increaseCount(event, this)" >+</button>
+                                </div>
+                        </div>
+                </div>
+                <a href="javascript:void(0)" class="add-btn">
+                    <div class="related-item-price">
+                        <em class="price"> {{ product.price | money }}</em>
+                    </div>
+                    <span>Add to cart</span>
+                
+                </a>
+            {%- endform -%}
