@@ -90,6 +90,25 @@ $( ".single-product__atc").on("click", function (e) {
   }
 
 
+//   Product Page Inccrease Button
+function increaseCount1(e, el) {
+    var $input = el.previousElementSibling;
+    var value = parseInt($input.value, 10);
+    value = isNaN(value) ? 0 : value;
+    value++;
+    $input.value = ('0' + value).slice(-2);            
+}
+
+function decreaseCount1(e, el) {
+    var $input = el.nextElementSibling;
+    var value = parseInt($input.value, 10);
+    if (value > 1) {
+        value = isNaN(value) ? 0 : value;
+        value--;
+        $input.value = ('0' + value).slice(-2);         
+    }
+}
+
 //   Remove
 function itemRemove(e , el){
         e.preventDefault();
